@@ -35,5 +35,5 @@ pub fn day1() {
 
     let top = &all[0..3];
     let tot: u32 = top.iter().sum();
-    print!("{tot}");
+    println!("{tot}");
 }
