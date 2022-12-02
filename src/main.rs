@@ -1,5 +1,6 @@
 mod day1;
 mod day2;
+pub mod read_lines;
 
 fn main() {
     println!("day1");

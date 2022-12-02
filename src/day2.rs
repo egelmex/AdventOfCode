@@ -1,22 +1,10 @@
-use std::{
-    fs::File,
-    io::{self, BufRead},
-    path::Path,
-};
-
-pub fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where
-    P: AsRef<Path>,
-{
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
-}
+use crate::read_lines;
 
 pub fn day2_part1() {
-    let input = read_lines("day2.txt")
+    let input = read_lines::read_lines("day2.txt")
         .expect("Failed to read file")
         .map(|x| x.unwrap())
-        .map(|s| str_to_RPS(s));
+        .map(|s| str_to_rps(s));
 
     let scores = input.map(|(a, b)| a.score(&b));
     let scores = scores.collect::<Vec<u32>>();
@@ -25,10 +13,10 @@ pub fn day2_part1() {
 }
 
 pub fn day2_part2() {
-    let input = read_lines("day2.txt")
+    let input = read_lines::read_lines("day2.txt")
         .expect("Failed to read file")
         .map(|x| x.unwrap())
-        .map(|s| str_to_RPS2(s));
+        .map(|s| str_to_rps2(s));
 
     let scores = input.map(|(a, b)| a.score(&b));
     let scores = scores.collect::<Vec<u32>>();
@@ -53,7 +41,9 @@ impl RPS {
     }
 
     fn score(&self, other: &RPS) -> u32 {
-        let res = (((other.value() + 1) as i32 - self.value() as i32).rem_euclid(3)) * 3;
+        let o = (other.value() + 1) as i32;
+        let s = self.value() as i32;
+        let res = (o - s).rem_euclid(3) * 3;
         res as u32
     }
 
@@ -65,11 +55,11 @@ impl RPS {
             _ => panic!("unknown"),
         };
 
-        value_to_RPS(pick)
+        value_to_rps(pick)
     }
 }
 
-fn value_to_RPS(value: u32) -> RPS {
+fn value_to_rps(value: u32) -> RPS {
     match value {
         0 => RPS::Scissors,
         1 => RPS::Rock,
@@ -80,31 +70,25 @@ fn value_to_RPS(value: u32) -> RPS {
     }
 }
 
-fn str_to_RPS(s: String) -> (RPS, RPS) {
+fn str_to_rps(s: String) -> (RPS, RPS) {
     let tmp: Vec<_> = s.split(" ").collect();
-    (a_to_name(tmp[0]), b_to_name(tmp[1]))
+    (parse_rps(tmp[0]), parse_rps(tmp[1]))
 }
 
-fn str_to_RPS2(s: String) -> (RPS, RPS) {
+fn str_to_rps2(s: String) -> (RPS, RPS) {
     let tmp: Vec<_> = s.split(" ").collect();
-    let a = a_to_name(tmp[0]);
+    let a = parse_rps(tmp[0]);
     (a, a.choose(tmp[1]))
 }
 
-fn a_to_name(a: &str) -> RPS {
+fn parse_rps(a: &str) -> RPS {
     match a {
         "A" => RPS::Rock,
         "B" => RPS::Paper,
         "C" => RPS::Scissors,
-        _ => panic!("Wrong a"),
-    }
-}
-
-fn b_to_name(a: &str) -> RPS {
-    match a {
         "X" => RPS::Rock,
         "Y" => RPS::Paper,
         "Z" => RPS::Scissors,
-        _ => panic!("Wrong b"),
+        _ => panic!("Wrong a"),
     }
 }

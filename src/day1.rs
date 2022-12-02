@@ -1,19 +1,7 @@
-use std::{
-    fs::File,
-    io::{self, BufRead},
-    path::Path,
-};
-
-pub fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where
-    P: AsRef<Path>,
-{
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
-}
+use crate::read_lines;
 
 pub fn day1() {
-    let input = read_lines("day1.txt").expect("Failed to read file");
+    let input = read_lines::read_lines("day1.txt").expect("Failed to read file");
     let input = input.map(|x| -> Result<u32, _> { x.expect("err").parse() });
     let input: Vec<_> = input.collect();
 
