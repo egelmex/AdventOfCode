@@ -48,47 +48,40 @@ impl RPS {
     }
 
     fn choose(&self, state: &str) -> RPS {
-        let pick = match state {
+        value_to_rps(match state {
             "X" => self.value() - 1,
             "Y" => self.value(),
             "Z" => self.value() + 1,
             _ => panic!("unknown"),
-        };
+        })
+    }
 
-        value_to_rps(pick)
+    fn parse(a: &str) -> Self {
+        match a {
+            "A" | "X" => RPS::Rock,
+            "B" | "Y" => RPS::Paper,
+            "C" | "Z" => RPS::Scissors,
+            _ => panic!("Wrong a"),
+        }
     }
 }
 
 fn value_to_rps(value: u32) -> RPS {
     match value {
-        0 => RPS::Scissors,
-        1 => RPS::Rock,
+        0 | 3 => RPS::Scissors,
+        1 | 4 => RPS::Rock,
         2 => RPS::Paper,
-        3 => RPS::Scissors,
-        4 => RPS::Rock,
         _ => panic!("unknown value : {value}"),
     }
 }
 
 fn str_to_rps(s: String) -> (RPS, RPS) {
     let tmp: Vec<_> = s.split(" ").collect();
-    (parse_rps(tmp[0]), parse_rps(tmp[1]))
+    (RPS::parse(tmp[0]), RPS::parse(tmp[1]))
 }
 
 fn str_to_rps2(s: String) -> (RPS, RPS) {
     let tmp: Vec<_> = s.split(" ").collect();
-    let a = parse_rps(tmp[0]);
+    let a = RPS::parse(tmp[0]);
     (a, a.choose(tmp[1]))
-}
-
-fn parse_rps(a: &str) -> RPS {
-    match a {
-        "A" => RPS::Rock,
-        "B" => RPS::Paper,
-        "C" => RPS::Scissors,
-        "X" => RPS::Rock,
-        "Y" => RPS::Paper,
-        "Z" => RPS::Scissors,
-        _ => panic!("Wrong a"),
-    }
 }
