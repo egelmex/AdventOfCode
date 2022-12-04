@@ -1,7 +1,7 @@
 use crate::read_lines;
 
 pub fn day1() {
-    let input = read_lines::read_lines("day1.txt").expect("Failed to read file");
+    let input = read_lines::read_lines("inputs/mine/day1.txt").expect("Failed to read file");
     let input = input.map(|x| -> Result<u32, _> { x.expect("err").parse() });
     let input: Vec<_> = input.collect();
 

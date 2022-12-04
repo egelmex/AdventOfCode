@@ -2,7 +2,7 @@ use crate::read_lines;
 use std::collections::HashSet;
 
 pub fn part1() {
-    let prios: u32 = read_lines::read_lines("day3.txt")
+    let prios: u32 = read_lines::read_lines("inputs/mine/day3.txt")
         .expect("failed to read file")
         .map(|x| x.unwrap())
         .map(|l| check_bag(l.chars().collect()))
@@ -13,7 +13,7 @@ pub fn part1() {
 }
 
 pub fn part2() {
-    let lines: Vec<HashSet<char>> = read_lines::read_lines("day3.txt")
+    let lines: Vec<HashSet<char>> = read_lines::read_lines("inputs/mine/day3.txt")
         .expect("failed to read file")
         .map(|x| x.unwrap())
         .map(|x| bag_to_set(&x))

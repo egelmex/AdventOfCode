@@ -1,7 +1,7 @@
 use crate::read_lines;
 
 pub fn day2_part1() {
-    let scores: u32 = read_lines::read_lines("day2.txt")
+    let scores: u32 = read_lines::read_lines("inputs/mine/day2.txt")
         .expect("Failed to read file")
         .map(|x| x.unwrap())
         .map(|s| str_to_rps(s))
@@ -12,7 +12,7 @@ pub fn day2_part1() {
 }
 
 pub fn day2_part2() {
-    let scores: u32 = read_lines::read_lines("day2.txt")
+    let scores: u32 = read_lines::read_lines("inputs/mine/day2.txt")
         .expect("Failed to read file")
         .map(|x| x.unwrap())
         .map(|s| str_to_rps2(s))
