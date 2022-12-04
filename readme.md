@@ -1,0 +1,3 @@
+# Advent of Code 2022
+
+These are my solutions to AoC 2022, I am using this as an opertunity to learn rust. I started reading the rust tutorial a week before AoC so this code is pretty shocking... 
