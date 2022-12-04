@@ -1,7 +1,5 @@
 use std::cmp;
 
-use itertools::Itertools;
-
 use crate::read_lines;
 
 pub fn part1() {
@@ -67,6 +65,7 @@ impl Range {
     }
 
     /// I miss read the instructions...
+    #[allow(dead_code)]
     fn count_overlap(&self, other: &Self) -> u32 {
         cmp::max(
             0,

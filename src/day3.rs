@@ -1,27 +1,25 @@
-use std::{collections::HashSet, hash::Hash, iter::Map, option::Iter, str::Chars, vec};
-
-use itertools::{Chunk, Itertools};
-
 use crate::read_lines;
+use std::collections::HashSet;
 
 pub fn part1() {
-    let lines = read_lines::read_lines("day3.txt").expect("failed to read file");
-    let lines = lines.map(|x| x.unwrap());
-    let output = lines.map(|l| check_bag(l.chars().collect()));
-    let prios: u32 = output.map(|s| priority(s)).sum();
+    let prios: u32 = read_lines::read_lines("day3.txt")
+        .expect("failed to read file")
+        .map(|x| x.unwrap())
+        .map(|l| check_bag(l.chars().collect()))
+        .map(|s| priority(s))
+        .sum();
 
     println!("{:?}", prios);
 }
 
 pub fn part2() {
-    let lines = read_lines::read_lines("day3.txt").expect("failed to read file");
-    let lines = lines.map(|x| x.unwrap());
+    let lines: Vec<HashSet<char>> = read_lines::read_lines("day3.txt")
+        .expect("failed to read file")
+        .map(|x| x.unwrap())
+        .map(|x| bag_to_set(&x))
+        .collect();
 
-    let lines: Vec<HashSet<char>> = lines.map(|x| bag_to_set(&x)).collect();
-
-    let groups = lines.chunks(3).into_iter();
-
-    let x: u32 = groups.map(|x| find_and_score(x)).sum();
+    let x: u32 = lines.chunks(3).into_iter().map(|x| find_and_score(x)).sum();
 
     println!("{:?}", x);
 }

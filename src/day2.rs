@@ -1,26 +1,24 @@
 use crate::read_lines;
 
 pub fn day2_part1() {
-    let input = read_lines::read_lines("day2.txt")
+    let scores: u32 = read_lines::read_lines("day2.txt")
         .expect("Failed to read file")
         .map(|x| x.unwrap())
-        .map(|s| str_to_rps(s));
+        .map(|s| str_to_rps(s))
+        .map(|(a, b)| a.score(&b))
+        .sum();
 
-    let scores = input.map(|(a, b)| a.score(&b));
-    let scores = scores.collect::<Vec<u32>>();
-    let scores: u32 = scores.iter().sum();
     println!("{:?}", scores);
 }
 
 pub fn day2_part2() {
-    let input = read_lines::read_lines("day2.txt")
+    let scores: u32 = read_lines::read_lines("day2.txt")
         .expect("Failed to read file")
         .map(|x| x.unwrap())
-        .map(|s| str_to_rps2(s));
+        .map(|s| str_to_rps2(s))
+        .map(|(a, b)| a.score(&b))
+        .sum();
 
-    let scores = input.map(|(a, b)| a.score(&b));
-    let scores = scores.collect::<Vec<u32>>();
-    let scores: u32 = scores.iter().sum();
     println!("{:?}", scores);
 }
 
