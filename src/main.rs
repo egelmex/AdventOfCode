@@ -30,4 +30,7 @@ fn main() {
 
     println!("day5 part 1");
     day5::part1();
+
+    println!("day5 part 2");
+    day5::part2();
 }

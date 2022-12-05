@@ -23,10 +23,13 @@ pub fn part1() {
     }
     let mut cols = process_crates(crates);
     for instruction in commands {
-        let p = instruction.split(" ").collect::<Vec<_>>();
-        let m: usize = p[1].parse().expect("fail");
-        let f: usize = p[3].parse().expect("fail");
-        let t: usize = p[5].parse().expect("fail");
+        let p = instruction
+            .split(" ")
+            .map(|x| x.parse::<usize>().unwrap_or_default())
+            .collect::<Vec<_>>();
+        let m: usize = p[1];
+        let f: usize = p[3];
+        let t: usize = p[5];
 
         let mut tmp: Vec<char> = vec![];
         for _ in 0..m {
@@ -35,8 +38,54 @@ pub fn part1() {
         for i in tmp {
             cols[t - 1].push(i);
         }
+    }
 
-        dbg!(&cols);
+    let mut out: String = "".to_string();
+    for mut i in cols {
+        out.push_str(i.pop().expect("fail").to_string().as_str());
+    }
+    println!("{out}");
+}
+
+pub fn part2() {
+    let input = read_lines::read_lines("inputs/mine/day5.txt")
+        .expect("falied to read")
+        .map(|x| x.unwrap());
+
+    let mut crates: Vec<String> = vec![];
+    let mut commands: Vec<String> = vec![];
+    let mut a = true;
+    for line in input {
+        match a {
+            true => {
+                if line.is_empty() {
+                    a = false;
+                } else {
+                    crates.push(line);
+                }
+            }
+
+            _ => commands.push(line),
+        }
+    }
+    let mut cols = process_crates(crates);
+    for instruction in commands {
+        let p = instruction
+            .split(" ")
+            .map(|x| x.parse::<usize>().unwrap_or_default())
+            .collect::<Vec<_>>();
+        let m: usize = p[1];
+        let f: usize = p[3];
+        let t: usize = p[5];
+
+        let mut tmp: Vec<char> = vec![];
+        for _ in 0..m {
+            tmp.push(cols[f - 1].pop().expect("fail"));
+        }
+        tmp.reverse();
+        for i in tmp {
+            cols[t - 1].push(i);
+        }
     }
 
     let mut out: String = "".to_string();
