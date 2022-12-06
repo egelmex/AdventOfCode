@@ -1,33 +1,33 @@
 use crate::read_lines;
 
 pub fn part1() {
-    let input = read_lines::read_lines_unwrapped("inputs/mine/day6.txt")
-        .next()
-        .unwrap();
-
+    let input = read_lines::read_as_string("inputs/mine/day6.txt");
     let buffer = Buffer::new(4);
-
-    check_all(input, buffer);
+    let pos = check_all(input, buffer);
+    match pos {
+        Ok(v) => println!("{}", v),
+        Err(e) => println!("{}", e),
+    }
 }
 
 pub fn part2() {
-    let input = read_lines::read_lines_unwrapped("inputs/mine/day6.txt")
-        .next()
-        .unwrap();
-
+    let input = read_lines::read_as_string("inputs/mine/day6.txt");
     let buffer = Buffer::new(14);
-
-    check_all(input, buffer);
+    let pos = check_all(input, buffer);
+    match pos {
+        Ok(v) => println!("{}", v),
+        Err(e) => println!("{}", e),
+    }
 }
 
-fn check_all(input: String, mut buffer: Buffer) {
+fn check_all(input: String, mut buffer: Buffer) -> Result<usize, &'static str> {
     for ch in input.chars() {
         if buffer.test(ch) {
-            println!("{}", buffer.count);
-            break;
+            return Ok(buffer.count);
         }
         buffer.write(ch);
     }
+    Err("No message found")
 }
 
 #[derive(Debug)]
