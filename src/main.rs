@@ -3,6 +3,7 @@ mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
 pub mod read_lines;
 
 fn main() {
@@ -33,4 +34,10 @@ fn main() {
 
     println!("day5 part 2");
     day5::part2();
+
+    println!("day6 part 1");
+    day6::part1();
+
+    println!("day6 part 2");
+    day6::part2();
 }

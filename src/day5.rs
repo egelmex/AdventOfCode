@@ -2,7 +2,7 @@ use crate::read_lines;
 
 pub fn part1() {
     let input = read_lines::read_lines("inputs/mine/day5.txt")
-        .expect("falied to read")
+        .unwrap()
         .map(|x| x.unwrap());
 
     let mut crates: Vec<String> = vec![];
@@ -33,7 +33,7 @@ pub fn part1() {
 
         let mut tmp: Vec<char> = vec![];
         for _ in 0..m {
-            tmp.push(cols[f - 1].pop().expect("fail"));
+            tmp.push(cols[f - 1].pop().unwrap());
         }
         for i in tmp {
             cols[t - 1].push(i);
@@ -42,14 +42,14 @@ pub fn part1() {
 
     let mut out: String = "".to_string();
     for mut i in cols {
-        out.push_str(i.pop().expect("fail").to_string().as_str());
+        out.push_str(i.pop().unwrap().to_string().as_str());
     }
     println!("{out}");
 }
 
 pub fn part2() {
     let input = read_lines::read_lines("inputs/mine/day5.txt")
-        .expect("falied to read")
+        .unwrap()
         .map(|x| x.unwrap());
 
     let mut crates: Vec<String> = vec![];
@@ -125,7 +125,7 @@ fn get_column_count(s: String) -> usize {
         .filter(|x| !x.is_empty())
         .collect::<Vec<_>>()
         .pop()
-        .expect("fail")
+        .unwrap()
         .parse::<usize>()
-        .expect("fail")
+        .unwrap()
 }
