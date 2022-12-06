@@ -1,6 +1,6 @@
 use crate::read_lines;
 
-pub fn day2_part1() {
+pub fn part1() -> String {
     let scores: u32 = read_lines::read_lines("inputs/mine/day2.txt")
         .expect("Failed to read file")
         .map(|x| x.unwrap())
@@ -8,10 +8,10 @@ pub fn day2_part1() {
         .map(|(a, b)| a.score(&b))
         .sum();
 
-    println!("{:?}", scores);
+    format!("{scores}")
 }
 
-pub fn day2_part2() {
+pub fn part2() -> String {
     let scores: u32 = read_lines::read_lines("inputs/mine/day2.txt")
         .expect("Failed to read file")
         .map(|x| x.unwrap())
@@ -19,7 +19,7 @@ pub fn day2_part2() {
         .map(|(a, b)| a.score(&b))
         .sum();
 
-    println!("{:?}", scores);
+    format!("{scores}")
 }
 
 #[derive(Debug, Copy, Clone)]

@@ -1,28 +1,83 @@
+use std::borrow::Borrow;
+use std::collections::HashMap;
+
+use cursive::traits::*;
+use cursive::views::{Button, Dialog, DummyView, EditView, LinearLayout, SelectView, TextView};
+use cursive::Cursive;
+use std::rc::Rc;
+
 mod day1;
 mod day2;
 mod day3;
 mod day4;
 pub mod read_lines;
 
+type Days = HashMap<&'static str, fn() -> String>;
+
 fn main() {
-    println!("day1");
-    day1::day1();
+    let mut days: Days = HashMap::new();
 
-    println!("day2 part1");
-    day2::day2_part1();
+    days.insert("day1", day1::part2);
+    days.insert("day2 - part 1", day2::part2);
+    days.insert("day2 - part 2", day2::part2);
+    days.insert("day3 - part 1", day3::part1);
+    days.insert("day3 - part 2", day3::part2);
+    days.insert("day4 - part 1", day4::part1);
+    days.insert("day4 - part 2", day4::part2);
 
-    println!("day2 part2");
-    day2::day2_part2();
+    let mut siv = cursive::default();
 
-    println!("day3 part 1");
-    day3::part1();
+    siv.set_user_data(days.clone());
 
-    println!("day3 part 2");
-    day3::part2();
+    siv.add_global_callback('q', |s| s.quit());
 
-    println!("day4 part 1");
-    day4::part1();
+    let select = SelectView::<String>::new()
+        //.on_submit(on_submit)
+        .with_name("select")
+        .fixed_size((10, 5));
 
-    println!("day4 part 2");
-    day4::part2();
+    let buttons = LinearLayout::horizontal()
+        .child(Button::new("Run", run))
+        .child(DummyView)
+        .child(Button::new("Quit", Cursive::quit));
+
+    siv.add_layer(
+        Dialog::around(
+            LinearLayout::vertical()
+                .child(select)
+                .child(DummyView)
+                .child(buttons),
+        )
+        .title("Select day"),
+    );
+
+    for (key, _) in days.into_iter() {
+        siv.call_on_name("select", |view: &mut SelectView<String>| {
+            view.add_item_str(key);
+        });
+    }
+
+    siv.run();
+}
+
+fn run(s: &mut Cursive) {
+    let day = s
+        .find_name::<SelectView<String>>("select")
+        .unwrap()
+        .selection()
+        .unwrap()
+        .to_string();
+
+    let func: &Days = s.user_data().unwrap();
+    let func = func.get(day.as_str()).unwrap();
+
+    let res = func();
+
+    s.add_layer(
+        Dialog::around(TextView::new(res))
+            .title(day.to_string())
+            .button("Close", |s| {
+                s.pop_layer();
+            }),
+    );
 }

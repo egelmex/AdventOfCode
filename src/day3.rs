@@ -1,7 +1,7 @@
 use crate::read_lines;
 use std::collections::HashSet;
 
-pub fn part1() {
+pub fn part1() -> String {
     let prios: u32 = read_lines::read_lines("inputs/mine/day3.txt")
         .expect("failed to read file")
         .map(|x| x.unwrap())
@@ -9,10 +9,10 @@ pub fn part1() {
         .map(|s| priority(s))
         .sum();
 
-    println!("{:?}", prios);
+    format!("{prios}")
 }
 
-pub fn part2() {
+pub fn part2() -> String {
     let lines: Vec<HashSet<char>> = read_lines::read_lines("inputs/mine/day3.txt")
         .expect("failed to read file")
         .map(|x| x.unwrap())
@@ -21,7 +21,7 @@ pub fn part2() {
 
     let x: u32 = lines.chunks(3).into_iter().map(|x| find_and_score(x)).sum();
 
-    println!("{:?}", x);
+    format!("{x}")
 }
 
 fn find_and_score(s: &[HashSet<char>]) -> u32 {

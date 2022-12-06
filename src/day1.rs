@@ -1,6 +1,6 @@
 use crate::read_lines;
 
-pub fn day1() {
+pub fn part2() -> String {
     let input = read_lines::read_lines("inputs/mine/day1.txt").expect("Failed to read file");
     let input = input.map(|x| -> Result<u32, _> { x.expect("err").parse() });
     let input: Vec<_> = input.collect();
@@ -23,5 +23,6 @@ pub fn day1() {
 
     let top = &all[0..3];
     let tot: u32 = top.iter().sum();
-    println!("{tot}");
+
+    format!("{tot}")
 }

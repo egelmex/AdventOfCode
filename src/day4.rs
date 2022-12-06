@@ -2,7 +2,7 @@ use std::cmp;
 
 use crate::read_lines;
 
-pub fn part1() {
+pub fn part1() -> String {
     let input = read_lines::read_lines("inputs/mine/day4.txt")
         .expect("falied to read")
         .map(|x| x.unwrap())
@@ -11,10 +11,10 @@ pub fn part1() {
         .filter(|x| *x)
         .count();
 
-    println!("{:?}", input);
+    format!("{input}")
 }
 
-pub fn part2() {
+pub fn part2() -> String {
     let input = read_lines::read_lines("inputs/mine/day4.txt")
         .expect("falied to read")
         .map(|x| x.unwrap())
@@ -22,7 +22,8 @@ pub fn part2() {
         .map(|x| x.0.overlaps(&x.1))
         .filter(|x| *x)
         .count();
-    println!("{:?}", input);
+
+    format!("{input}")
 }
 
 struct Range {
