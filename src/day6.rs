@@ -3,8 +3,7 @@ use crate::read_lines;
 pub fn part1() {
     let input = read_lines::read_as_string("inputs/mine/day6.txt");
     let buffer = Buffer::new(4);
-    let pos = check_all(input, buffer);
-    match pos {
+    match check_all(input, buffer) {
         Ok(v) => println!("{}", v),
         Err(e) => println!("{}", e),
     }
@@ -13,8 +12,7 @@ pub fn part1() {
 pub fn part2() {
     let input = read_lines::read_as_string("inputs/mine/day6.txt");
     let buffer = Buffer::new(14);
-    let pos = check_all(input, buffer);
-    match pos {
+    match check_all(input, buffer) {
         Ok(v) => println!("{}", v),
         Err(e) => println!("{}", e),
     }
