@@ -34,7 +34,38 @@ pub fn part1() {
     println!("{}", count);
 }
 
-pub fn part2() {}
+pub fn part2() {
+    let lines = read_lines::read_lines("inputs/mine/day7.txt")
+        .unwrap()
+        .map(|x| x.unwrap());
+    let root = construct(lines);
+
+    let disk_size: u32 = 70_000_000;
+    let disk_needed: u32 = 30_000_000;
+    let root_size = root.clone().borrow_mut().size();
+
+    let space_needed = disk_needed - (disk_size - root_size);
+
+    let mut big: Vec<(String, u32)> = vec![];
+
+    dbg!(space_needed);
+
+    let mut to_proccess = vec![root];
+    while !to_proccess.is_empty() {
+        let next = to_proccess.pop().unwrap();
+        let size = next.clone().borrow_mut().size();
+        if size >= space_needed {
+            let name = next.borrow_mut().name.clone();
+            big.push((name, size));
+        }
+        for c in next.clone().borrow_mut().dirs.clone() {
+            to_proccess.push(c.clone());
+        }
+    }
+
+    big.sort_by(|(_, a), (_, b)| a.cmp(b));
+    println!("{:?} {:?}", big.iter().next(), big.iter().next());
+}
 
 struct Dir {
     name: String,
