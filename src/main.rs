@@ -49,6 +49,9 @@ fn main() {
     println!("day7 part 2");
     day7::part2();    */
 
-    println!("day8 part 1");
-    day8::part1();
+    //println!("day8 part 1");
+    //day8::part1();
+
+    println!("day8 part 2");
+    day8::part2();
 }
