@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::{collections::HashSet, fmt};
 
 use crate::read_lines::read_lines_unwrapped;
 
@@ -12,15 +12,8 @@ pub fn part1() {
     visited.insert(tail);
 
     for line in input {
-        println!("{}", &line);
         let direction = line.chars().nth(0).unwrap();
-        let distance = line
-            .chars()
-            .nth(2)
-            .unwrap()
-            .to_string()
-            .parse::<i32>()
-            .unwrap();
+        let distance = line.split(" ").nth(1).unwrap().parse::<i32>().unwrap();
 
         for _ in 0..distance {
             match direction {
@@ -57,16 +50,16 @@ pub fn part1() {
                 }
             };
             visited.insert(tail);
-            dbg!(&visited);
         }
     }
     print!("{}", visited.len());
 }
 
 fn pts_to_direction(a: Pt, b: Pt) -> Direction {
-    let distance_x = (a.x - b.x);
-    let distance_y = (a.y - b.y);
+    let distance_x = a.x - b.x;
+    let distance_y = a.y - b.y;
     match (distance_x, distance_y) {
+        (x, y) if x > 2 || y > 2 => panic!(),
         (0, 2) => Direction::U,
         (0, -2) => Direction::D,
         (2, 0) => Direction::R,
@@ -92,8 +85,14 @@ enum Direction {
     UL,
     None,
 }
-#[derive(Clone, Debug, Copy, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 struct Pt {
     x: i32,
     y: i32,
+}
+
+impl fmt::Debug for Pt {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Pt<{},{}>", self.x.to_string(), self.y.to_string())
+    }
 }
