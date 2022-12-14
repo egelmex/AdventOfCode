@@ -55,19 +55,77 @@ pub fn part1() {
     print!("{}", visited.len());
 }
 
+pub fn part2() {
+    let input = read_lines_unwrapped("inputs/mine/day9.txt");
+    let mut visited: HashSet<Pt> = HashSet::new();
+
+    let mut knots = [Pt { x: 0, y: 0 }; 10];
+
+    visited.insert(knots[knots.len() - 1]);
+
+    for line in input {
+        let direction = line.chars().nth(0).unwrap();
+        let distance = line.split(" ").nth(1).unwrap().parse::<i32>().unwrap();
+
+        for _ in 0..distance {
+            let head = &mut knots[0];
+            match direction {
+                'R' => head.x += 1,
+                'L' => head.x -= 1,
+                'U' => head.y += 1,
+                'D' => head.y -= 1,
+                _ => panic!("uknonw direction"),
+            }
+
+            for i in 1..knots.len() {
+                let head = knots[i - 1];
+                let mut tail = &mut knots[i];
+                let d = pts_to_direction(head, *tail);
+
+                match d {
+                    Direction::None => {}
+                    Direction::R => tail.x += 1,
+                    Direction::U => tail.y += 1,
+                    Direction::L => tail.x -= 1,
+                    Direction::D => tail.y -= 1,
+                    Direction::UR => {
+                        tail.x += 1;
+                        tail.y += 1
+                    }
+                    Direction::UL => {
+                        tail.y += 1;
+                        tail.x -= 1
+                    }
+                    Direction::DL => {
+                        tail.x -= 1;
+                        tail.y -= 1
+                    }
+                    Direction::DR => {
+                        tail.y -= 1;
+                        tail.x += 1
+                    }
+                };
+            }
+
+            visited.insert(knots[knots.len() - 1]);
+        }
+    }
+    print!("{}", visited.len());
+}
+
 fn pts_to_direction(a: Pt, b: Pt) -> Direction {
     let distance_x = a.x - b.x;
     let distance_y = a.y - b.y;
     match (distance_x, distance_y) {
-        (x, y) if x > 2 || y > 2 => panic!(),
+        (x, y) if x > 2 || y > 2 => panic!("{:?} {:?} {} {}", a, b, distance_x, distance_y),
         (0, 2) => Direction::U,
         (0, -2) => Direction::D,
         (2, 0) => Direction::R,
         (-2, 0) => Direction::L,
-        (1, -2) | (2, -1) => Direction::DR,
-        (-1, -2) | (-2, -1) => Direction::DL,
-        (1, 2) | (2, 1) => Direction::UR,
-        (-1, 2) | (-2, 1) => Direction::UL,
+        (1, -2) | (2, -1) | (2, -2) => Direction::DR,
+        (-1, -2) | (-2, -1) | (-2, -2) => Direction::DL,
+        (1, 2) | (2, 1) | (2, 2) => Direction::UR,
+        (-1, 2) | (-2, 1) | (-2, 2) => Direction::UL,
 
         _ => Direction::None,
     }
