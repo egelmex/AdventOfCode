@@ -1,5 +1,6 @@
 mod day1;
 mod day10;
+mod day11;
 mod day2;
 mod day3;
 mod day4;
@@ -66,6 +67,12 @@ fn main() {
     //println!("day10 part 1");
     //day10::part1();
 
-    println!("day10 part 2");
-    day10::part2();
+    //println!("day10 part 2");
+    //day10::part2();
+
+    //intln!("day11 part 1");
+    //day11::part1();
+
+    println!("day11 part 2");
+    day11::part2();
 }
