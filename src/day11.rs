@@ -7,16 +7,16 @@ use crate::read_lines::read_lines_unwrapped;
 #[derive(Clone, PartialEq, Eq, Hash)]
 struct Monkey {
     id: usize,
-    items: Vec<i32>,
+    items: Vec<i128>,
     math: Math,
-    test: i32,
+    test: i128,
     pass: usize,
     fail: usize,
     count: usize,
 }
 
 impl Monkey {
-    fn new(id: usize, items: &Vec<i32>, math: Math, test: i32, pass: usize, fail: usize) -> Self {
+    fn new(id: usize, items: &Vec<i128>, math: Math, test: i128, pass: usize, fail: usize) -> Self {
         Monkey {
             id,
             items: items.clone(),
@@ -28,8 +28,8 @@ impl Monkey {
         }
     }
 
-    fn run(&mut self, part1: bool, common_multiple: i32) -> Box<Vec<(usize, i32)>> {
-        let mut res: Box<Vec<(usize, i32)>> = Box::new(Vec::new());
+    fn run(&mut self, part1: bool, common_multiple: i128) -> Box<Vec<(usize, i128)>> {
+        let mut res: Box<Vec<(usize, i128)>> = Box::new(Vec::new());
         for old in self.items.drain(..) {
             let mut new = self.math.run(old);
 
@@ -37,7 +37,6 @@ impl Monkey {
                 new = new / 3;
             } else {
                 new = new % common_multiple;
-                dbg!(common_multiple, new);
             }
 
             let next;
@@ -82,7 +81,7 @@ pub fn part1() {
             .unwrap()
             .strip_prefix("  Test: divisible by ")
             .unwrap()
-            .parse::<i32>()
+            .parse::<i128>()
             .unwrap();
 
         let pass = chunk
@@ -118,7 +117,7 @@ pub fn part1() {
     let a = res.next().unwrap();
     let b = res.next().unwrap();
 
-    dbg!(monkeys);
+    //dbg!(monkeys);
     println!("res: {}*{} = {}", a, b, a * b);
 }
 
@@ -144,7 +143,7 @@ pub fn part2() {
             .unwrap()
             .strip_prefix("  Test: divisible by ")
             .unwrap()
-            .parse::<i32>()
+            .parse::<i128>()
             .unwrap();
 
         let pass = chunk
@@ -171,7 +170,7 @@ pub fn part2() {
         common_multiple *= m.test;
     }
 
-    for i in 0..10000 {
+    for _ in 0..10000 {
         for j in 0..monkeys.len() {
             let x = monkeys[j].run(false, common_multiple);
             for (from, value) in x.iter() {
@@ -185,7 +184,7 @@ pub fn part2() {
     let a = res.next().unwrap();
     let b = res.next().unwrap();
 
-    dbg!(monkeys);
+    //dbg!(monkeys);
     println!("res: {}*{} = {}", a, b, a * b);
 }
 
@@ -200,14 +199,14 @@ fn parse_id(chunk: &mut itertools::Chunk<impl Iterator<Item = String>>) -> usize
     id
 }
 
-fn parse_items(chunk: &mut itertools::Chunk<impl Iterator<Item = String>>) -> Vec<i32> {
+fn parse_items(chunk: &mut itertools::Chunk<impl Iterator<Item = String>>) -> Vec<i128> {
     let items = chunk.next();
     let items = items.unwrap();
     let items = items
         .strip_prefix("  Starting items: ")
         .unwrap()
         .split(", ")
-        .map(|x| x.parse::<i32>().unwrap())
+        .map(|x| x.parse::<i128>().unwrap())
         .collect::<Vec<_>>();
     items
 }
@@ -223,12 +222,12 @@ impl Math {
     fn new(input: &Vec<&str>) -> Self {
         let a = match *input.get(0).unwrap() {
             "old" => Value::OLD,
-            x => Value::CONST(x.parse::<i32>().unwrap()),
+            x => Value::CONST(x.parse::<i128>().unwrap()),
         };
 
         let b = match *input.get(2).unwrap() {
             "old" => Value::OLD,
-            x => Value::CONST(x.parse::<i32>().unwrap()),
+            x => Value::CONST(x.parse::<i128>().unwrap()),
         };
 
         let op = match *input.get(1).unwrap() {
@@ -240,7 +239,7 @@ impl Math {
         Math { a, b, op }
     }
 
-    fn run(&self, old: i32) -> i32 {
+    fn run(&self, old: i128) -> i128 {
         match self.op {
             Operation::PLUS => self.a.get(old) + self.b.get(old),
             Operation::TIMES => self.a.get(old) * self.b.get(old),
@@ -249,7 +248,7 @@ impl Math {
 }
 
 impl Value {
-    fn get(&self, old: i32) -> i32 {
+    fn get(&self, old: i128) -> i128 {
         match self {
             Self::CONST(x) => *x,
             Self::OLD => old,
@@ -281,7 +280,7 @@ impl fmt::Debug for Operation {
 #[derive(Clone, PartialEq, Eq, Hash)]
 enum Value {
     OLD,
-    CONST(i32),
+    CONST(i128),
 }
 
 impl fmt::Debug for Value {
