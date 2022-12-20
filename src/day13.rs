@@ -14,19 +14,57 @@ peg::parser! {
 }
 
 pub fn part1() {
-    let lines = read_lines_unwrapped("inputs/examples/day13.txt").chunks(3);
+    let lines = read_lines_unwrapped("inputs/mine/day13.txt").chunks(3);
 
+    let mut count = 0;
+    let mut i = 0;
     for mut c in &lines {
+        i += 1;
         let left = c.next().unwrap();
         let right = c.next().unwrap();
 
         let mut left = list_parser::list(&left).unwrap();
         let mut right = list_parser::list(&right).unwrap();
 
-        dbg!(left, right);
+        //dbg!(&left, &right);
+        let res = check(&left, &right);
+        count += match res {
+            RESULT::OK => i,
+            RESULT::FAIL => 0,
+            RESULT::CONTINUE => panic!("this shoudlnt be possible"),
+        };
+
+        dbg!(i, res);
     }
+    println!("{}", count);
 }
 
+fn check(a: &V, b: &V) -> RESULT {
+    dbg!(a, b);
+    match (a, b) {
+        (V::Value(a), V::Value(b)) if a < b => RESULT::OK,
+        (V::Value(a), V::Value(b)) if a > b => RESULT::FAIL,
+        (V::Value(_), V::Value(_)) => RESULT::CONTINUE,
+        (V::List(_), V::Value(b)) => check(a, &V::List(vec![V::Value(*b)])),
+        (V::Value(a), V::List(_)) => check(&V::List(vec![V::Value(*a)]), b),
+        (V::List(a), V::List(b)) => {
+            for items in a.iter().zip(b) {
+                match check(items.0, items.1) {
+                    RESULT::FAIL => return RESULT::FAIL,
+                    RESULT::OK => return RESULT::OK,
+                    RESULT::CONTINUE => continue,
+                };
+            }
+            if (a.len() == b.len()) {
+                return RESULT::CONTINUE;
+            } else if a.len() < b.len() {
+                return RESULT::OK;
+            } else {
+                return RESULT::FAIL;
+            }
+        }
+    }
+}
 #[derive(Clone, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum V {
     Value(u32),
@@ -56,4 +94,10 @@ impl fmt::Debug for V {
             V::Value(x) => write!(f, "{}", x),
         }
     }
+}
+#[derive(Debug)]
+enum RESULT {
+    CONTINUE,
+    FAIL,
+    OK,
 }
