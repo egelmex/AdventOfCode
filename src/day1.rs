@@ -1,9 +1,7 @@
 use crate::read_lines;
 
 pub fn day1() {
-    let input = read_lines::read_lines("inputs/mine/day1.txt").expect("Failed to read file");
-    let input = input.map(|x| -> Result<u32, _> { x.expect("err").parse() });
-    let input: Vec<_> = input.collect();
+    let input = read_lines::read_lines_unwrapped("inputs/mine/day1.txt").map(|x| x.parse::<u32>());
 
     let mut all: Vec<u32> = vec![];
     let mut count = 0;
@@ -21,7 +19,6 @@ pub fn day1() {
     all.sort_unstable();
     all.reverse();
 
-    let top = &all[0..3];
-    let tot: u32 = top.iter().sum();
+    let tot: u32 = all[0..3].iter().sum();
     println!("{tot}");
 }

@@ -2,24 +2,24 @@ use crate::read_lines;
 use std::collections::HashSet;
 
 pub fn part1() {
-    let prios: u32 = read_lines::read_lines("inputs/mine/day3.txt")
-        .expect("failed to read file")
-        .map(|x| x.unwrap())
+    let prios = read_lines::read_lines_unwrapped("inputs/mine/day3.txt")
         .map(|l| check_bag(l.chars().collect()))
         .map(|s| priority(s))
-        .sum();
+        .sum::<u32>();
 
     println!("{:?}", prios);
 }
 
 pub fn part2() {
-    let lines: Vec<HashSet<char>> = read_lines::read_lines("inputs/mine/day3.txt")
-        .expect("failed to read file")
-        .map(|x| x.unwrap())
+    let lines: Vec<HashSet<char>> = read_lines::read_lines_unwrapped("inputs/mine/day3.txt")
         .map(|x| bag_to_set(&x))
         .collect();
 
-    let x: u32 = lines.chunks(3).into_iter().map(|x| find_and_score(x)).sum();
+    let x = lines
+        .chunks(3)
+        .into_iter()
+        .map(|x| find_and_score(x))
+        .sum::<u32>();
 
     println!("{:?}", x);
 }

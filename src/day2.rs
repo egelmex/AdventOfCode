@@ -1,9 +1,7 @@
 use crate::read_lines;
 
 pub fn day2_part1() {
-    let scores: u32 = read_lines::read_lines("inputs/mine/day2.txt")
-        .expect("Failed to read file")
-        .map(|x| x.unwrap())
+    let scores: i32 = read_lines::read_lines_unwrapped("inputs/mine/day2.txt")
         .map(|s| str_to_rps(s))
         .map(|(a, b)| a.score(&b))
         .sum();
@@ -12,9 +10,7 @@ pub fn day2_part1() {
 }
 
 pub fn day2_part2() {
-    let scores: u32 = read_lines::read_lines("inputs/mine/day2.txt")
-        .expect("Failed to read file")
-        .map(|x| x.unwrap())
+    let scores: i32 = read_lines::read_lines_unwrapped("inputs/mine/day2.txt")
         .map(|s| str_to_rps2(s))
         .map(|(a, b)| a.score(&b))
         .sum();
@@ -30,7 +26,7 @@ enum RPS {
 }
 
 impl RPS {
-    fn value(&self) -> u32 {
+    fn value(&self) -> i32 {
         match self {
             RPS::Rock => 1,
             RPS::Paper => 2,
@@ -38,11 +34,8 @@ impl RPS {
         }
     }
 
-    fn score(&self, other: &RPS) -> u32 {
-        let o = (other.value() + 1) as i32;
-        let s = self.value() as i32;
-        let res = (o - s).rem_euclid(3) * 3;
-        res as u32
+    fn score(&self, other: &RPS) -> i32 {
+        (other.value() + 1 - self.value()).rem_euclid(3) * 3
     }
 
     fn choose(&self, state: &str) -> RPS {
@@ -64,7 +57,7 @@ impl RPS {
     }
 }
 
-fn value_to_rps(value: u32) -> RPS {
+fn value_to_rps(value: i32) -> RPS {
     match value {
         0 | 3 => RPS::Scissors,
         1 | 4 => RPS::Rock,
@@ -79,7 +72,7 @@ fn str_to_rps(s: String) -> (RPS, RPS) {
 }
 
 fn str_to_rps2(s: String) -> (RPS, RPS) {
-    let tmp: Vec<_> = s.split(" ").collect();
+    let tmp = s.split(" ").collect::<Vec<_>>();
     let a = RPS::parse(tmp[0]);
     (a, a.choose(tmp[1]))
 }

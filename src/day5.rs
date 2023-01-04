@@ -1,9 +1,7 @@
 use crate::read_lines;
 
 pub fn part1() {
-    let input = read_lines::read_lines("inputs/mine/day5.txt")
-        .unwrap()
-        .map(|x| x.unwrap());
+    let input = read_lines::read_lines_unwrapped("inputs/mine/day5.txt");
 
     let mut crates: Vec<String> = vec![];
     let mut commands: Vec<String> = vec![];
@@ -21,6 +19,7 @@ pub fn part1() {
             _ => commands.push(line),
         }
     }
+
     let mut cols = process_crates(crates);
     for instruction in commands {
         let p = instruction
@@ -48,9 +47,7 @@ pub fn part1() {
 }
 
 pub fn part2() {
-    let input = read_lines::read_lines("inputs/mine/day5.txt")
-        .unwrap()
-        .map(|x| x.unwrap());
+    let input = read_lines::read_lines_unwrapped("inputs/mine/day5.txt");
 
     let mut crates: Vec<String> = vec![];
     let mut commands: Vec<String> = vec![];

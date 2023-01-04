@@ -3,9 +3,7 @@ use std::cmp;
 use crate::read_lines;
 
 pub fn part1() {
-    let input = read_lines::read_lines("inputs/mine/day4.txt")
-        .expect("falied to read")
-        .map(|x| x.unwrap())
+    let input = read_lines::read_lines_unwrapped("inputs/mine/day4.txt")
         .map(|x| line_to_pair(&x))
         .map(|x| x.0.contains(&x.1))
         .filter(|x| *x)
@@ -15,9 +13,7 @@ pub fn part1() {
 }
 
 pub fn part2() {
-    let input = read_lines::read_lines("inputs/mine/day4.txt")
-        .expect("falied to read")
-        .map(|x| x.unwrap())
+    let input = read_lines::read_lines_unwrapped("inputs/mine/day4.txt")
         .map(|x| line_to_pair(&x))
         .map(|x| x.0.overlaps(&x.1))
         .filter(|x| *x)
